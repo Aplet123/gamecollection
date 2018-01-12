@@ -4,6 +4,7 @@ var svg = d3.select("body")
   .append("svg")
   .attr("width", width)
   .attr("height", height);
+var defs = svg.append("defs");
 var board = svg.append("g");
 var gridLengths = d3.range(9).map(function (v, i) {
   return i * 50 + 50;
@@ -13,6 +14,12 @@ board.selectAll("line.column")
   .enter()
   .append("line")
   .classed("column", true)
+  .classed("edge", function (d, i) {
+    if (i == 0 || i == 8) {
+      return true;
+    }
+    return false;
+  })
   .attr("x1", function (d) {
     return d;
   })
@@ -40,6 +47,12 @@ board.selectAll("line.row")
   .enter()
   .append("line")
   .classed("row", true)
+  .classed("edge", function (d, i) {
+    if (i == 0 || i == 9) {
+      return true;
+    }
+    return false;
+  })
   .attr("y1", function (d) {
     return d;
   })
@@ -94,3 +107,21 @@ board.selectAll("line.diagonal")
   })
   .attr("stroke-width", "2")
   .attr("stroke", "#000000");
+defs.append("filter")
+  .attr("id", "invert")
+  .append("feComponentTransfer")
+  .attr("in", "SourceGraphic")
+  .selectAll(".invertfunc")
+  .data(["R", "G", "B"])
+  .enter()
+  .append(function (d) {
+    return d3.creator("feFunc" + d).call(this);
+  })
+  .classed("invertfunc", true)
+  .attr("type", "linear")
+  .attr("slope", "-1")
+  .attr("intercept", "1");
+defs.selectAll("g.piece")
+  .data(["king", "guard", "elephant", "knight", "castle", "cannon", "pawn"])
+  .enter()
+  .append("circle");
