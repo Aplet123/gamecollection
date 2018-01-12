@@ -133,15 +133,58 @@ defs.append("filter")
   .attr("type", "linear")
   .attr("slope", "-1")
   .attr("intercept", "1");
-defs.selectAll("g.piece")
+defs.selectAll("g.whiteuse")
   .data(["king", "guard", "elephant", "knight", "castle", "cannon", "pawn"])
   .enter()
-  .append("circle")
+  .append("g")
   .attr("id", function (d) {
     return d;
   })
-  .classed("piece", true)
-  .classed(function (d) {
-    return d;
-  }, true)
-  .attr();
+  .classed("whiteuse", true)
+  .append("circle")
+  .attr("r", "18")
+  .attr("stroke-width", "2")
+  .attr("stroke", "#ff0000")
+  .attr("fill", "#ffffff");
+defs.selectAll("g.blackuse")
+  .data(["king", "guard", "elephant", "knight", "castle", "cannon", "pawn"])
+  .enter()
+  .append("g")
+  .attr("id", function (d) {
+    return d + "b";
+  })
+  .classed("blackuse", true)
+  .append("use")
+  .attr("href", function (d) {
+    return "#" + d;
+  })
+  .attr("filter", function (d) {
+    return "url(#" + d + ")";
+  });
+defs.select("#king")
+  .append("path")
+  .attr("d", "");
+var bvs = d3.range(10).map(function () {
+  return Array(9);
+});
+bvs[9][0] = "castle";
+bvs[9][1] = "knight";
+bvs[9][2] = "elephant";
+bvs[9][3] = "guard";
+bvs[9][4] = "king";
+bvs[9][5] = "guard";
+bvs[9][6] = "elephant";
+bvs[9][7] = "knight";
+bvs[9][8] = "castle";
+bvs[0][0] = "castleb";
+bvs[0][1] = "knightb";
+bvs[0][2] = "elephantb";
+bvs[0][3] = "guardb";
+bvs[0][4] = "kingb";
+bvs[0][5] = "guardb";
+bvs[0][6] = "elephantb";
+bvs[0][7] = "knightb";
+bvs[0][8] = "castleb";
+svg.append("use")
+  .attr("href", "#king")
+  .attr("transform", "translate(100 100)");
