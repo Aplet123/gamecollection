@@ -40,6 +40,12 @@ board.selectAll("line.column")
       return "500 0";
     }
     return "200 50 200";
+  })
+  .attr("stroke-linecap", function (d, i) {
+    if (i == 0 || i == 8) {
+      return "square";
+    }
+    return "butt";
   });
 gridLengths.push(500);
 board.selectAll("line.row")
@@ -67,7 +73,13 @@ board.selectAll("line.row")
     }
     return 2;
   })
-  .attr("stroke", "#000000");
+  .attr("stroke", "#000000")
+  .attr("stroke-linecap", function (d, i) {
+    if (i == 0 || i == 9) {
+      return "square";
+    }
+    return "butt";
+  });
 board.selectAll("line.diagonal")
   .data([{
     x1: 200,
@@ -124,4 +136,12 @@ defs.append("filter")
 defs.selectAll("g.piece")
   .data(["king", "guard", "elephant", "knight", "castle", "cannon", "pawn"])
   .enter()
-  .append("circle");
+  .append("circle")
+  .attr("id", function (d) {
+    return d;
+  })
+  .classed("piece", true)
+  .classed(function (d) {
+    return d;
+  }, true)
+  .attr();
