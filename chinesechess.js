@@ -79,7 +79,7 @@ board.selectAll("line.diagonal")
   }])
   .enter()
   .append("line")
-  .classed("row", true)
+  .classed("diagonal", true)
   .attr("x1", function (d) {
     return d.x1;
   })
