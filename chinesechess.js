@@ -145,7 +145,9 @@ defs.selectAll("g.whiteuse")
   .attr("r", "18")
   .attr("stroke-width", "2")
   .attr("stroke", "#ff0000")
-  .attr("fill", "#ffffff");
+  .attr("fill", "#ffffff")
+  .attr("cx", "0")
+  .attr("cy", "0");
 defs.selectAll("g.blackuse")
   .data(["king", "guard", "elephant", "knight", "castle", "cannon", "pawn"])
   .enter()
@@ -154,16 +156,84 @@ defs.selectAll("g.blackuse")
     return d + "b";
   })
   .classed("blackuse", true)
-  .append("use")
-  .attr("href", function (d) {
-    return "#" + d;
-  })
-  .attr("filter", function (d) {
-    return "url(#" + d + ")";
-  });
+  .append("circle")
+  .attr("r", "18")
+  .attr("stroke-width", "2")
+  .attr("stroke", "#00ffff")
+  .attr("fill", "#000000")
+  .attr("cx", "0")
+  .attr("cy", "0");
+defs.selectAll("g.blackuse");
 defs.select("#king")
   .append("path")
-  .attr("d", "");
+  .attr("d", "M-10 7 L 10 7 M-9 10 L 9 10 C 20 -5, 0 -15, 0 7 M-9 10 C -20 -5, 0 -15, 0 7 M-4 -5 Q 0 -10, 4 -5 M0 -8 L 0 -15 M-3 -12 L 3 -12")
+  .attr("fill", "transparent")
+  .attr("stroke", "#000000")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#kingb")
+  .append("path")
+  .attr("d", "M-10 7 L 10 7 M-9 10 L 9 10 C 20 -5, 0 -15, 0 7 M-9 10 C -20 -5, 0 -15, 0 7 M-4 -5 Q 0 -10, 4 -5 M0 -8 L 0 -15 M-3 -12 L 3 -12")
+  .attr("fill", "transparent")
+  .attr("stroke", "#ffffff")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#guard")
+  .append("path")
+  .attr("d", "M0 15 C 8 10, 12 -8, 10 -10 Q 7 -7, 0 -10 M-10 -10 Q -7 -7, 0 -10 M0 15 C -8 10, -12 -8, -10 -10 M0 10 L 0 -5 M-6 0 L 6 0")
+  .attr("fill", "transparent")
+  .attr("stroke", "#000000")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#guardb")
+  .append("path")
+  .attr("d", "M0 15 C 8 10, 12 -8, 10 -10 Q 7 -7, 0 -10 M-10 -10 Q -7 -7, 0 -10 M0 15 C -8 10, -12 -8, -10 -10 M0 10 L 0 -5 M-6 0 L 6 0")
+  .attr("fill", "transparent")
+  .attr("stroke", "#ffffff")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#elephant")
+  .append("path")
+  .attr("d", "M3 5 A 10 10 0 1 0 -3 5 M-3 -1 L -2 15 L 2 15 L 3 -1 M-4 -6 A 1 1 0 1 0 -4.001 -6 M4 -6 A 1 1 0 1 0 3.999 -6")
+  .attr("fill", "transparent")
+  .attr("stroke", "#000000")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#elephantb")
+  .append("path")
+  .attr("d", "M3 5 A 10 10 0 1 0 -3 5 M-3 -1 L -2 15 L 2 15 L 3 -1 M-4 -6 A 1 1 0 1 0 -4.001 -6 M4 -6 A 1 1 0 1 0 3.999 -6")
+  .attr("fill", "transparent")
+  .attr("stroke", "#ffffff")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#knight")
+  .append("path")
+  .attr("d", "M-5 10 L 10 10 C 10 -8, 8 -8, 0 -10 S -10 -5, -10 0 S -3 4, 0 0 Z M-6 -4 A 1 1 0 1 0 -5.999 -4")
+  .attr("fill", "transparent")
+  .attr("stroke", "#000000")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#knightb")
+  .append("path")
+  .attr("d", "M-5 10 L 10 10 C 10 -8, 8 -8, 0 -10 S -10 -5, -10 0 S -3 4, 0 0 Z M-6 -4 A 1 1 0 1 0 -5.999 -4")
+  .attr("fill", "transparent")
+  .attr("stroke", "#ffffff")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#castle")
+  .append("path")
+  .attr("d", "M-5 10 L 10 10 C 10 -8, 8 -8, 0 -10 S -10 -5, -10 0 S -3 4, 0 0 Z M-6 -4 A 1 1 0 1 0 -5.999 -4")
+  .attr("fill", "transparent")
+  .attr("stroke", "#000000")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
+defs.select("#castleb")
+  .append("path")
+  .attr("d", "M-5 10 L 10 10 C 10 -8, 8 -8, 0 -10 S -10 -5, -10 0 S -3 4, 0 0 Z M-6 -4 A 1 1 0 1 0 -5.999 -4")
+  .attr("fill", "transparent")
+  .attr("stroke", "#ffffff")
+  .attr("stroke-width", "2")
+  .attr("stroke-linecap", "round");
 var bvs = d3.range(10).map(function () {
   return Array(9);
 });
@@ -185,6 +255,181 @@ bvs[0][5] = "guardb";
 bvs[0][6] = "elephantb";
 bvs[0][7] = "knightb";
 bvs[0][8] = "castleb";
-svg.append("use")
-  .attr("href", "#king")
-  .attr("transform", "translate(100 100)");
+bvs[6][0] = "pawn"
+bvs[6][2] = "pawn"
+bvs[6][6] = "pawn";
+bvs[6][8] = "pawn"
+bvs[7][1] = "cannon";
+bvs[7][7] = "cannon";
+bvs[3][0] = "pawnb"
+bvs[3][2] = "pawnb"
+bvs[3][6] = "pawnb";
+bvs[3][8] = "pawnb"
+bvs[2][1] = "cannonb";
+bvs[2][7] = "cannonb";
+var pieceArray = [{
+  bx: 9,
+  by: 0,
+  name: "castle",
+  team: "white"
+}, {
+  bx: 9,
+  by: 1,
+  name: "knight",
+  team: "white"
+}, {
+  bx: 9,
+  by: 2,
+  name: "elephant",
+  team: "white"
+}, {
+  bx: 9,
+  by: 3,
+  name: "guard",
+  team: "white"
+}, {
+  bx: 9,
+  by: 4,
+  name: "king",
+  team: "white"
+}, {
+  bx: 9,
+  by: 5,
+  name: "guard",
+  team: "white"
+}, {
+  bx: 9,
+  by: 6,
+  name: "elephant",
+  team: "white"
+}, {
+  bx: 9,
+  by: 7,
+  name: "knight",
+  team: "white"
+}, {
+  bx: 9,
+  by: 8,
+  name: "castle",
+  team: "white"
+}, {
+  bx: 0,
+  by: 0,
+  name: "castle",
+  team: "black"
+}, {
+  bx: 0,
+  by: 1,
+  name: "knight",
+  team: "black"
+}, {
+  bx: 0,
+  by: 2,
+  name: "elephant",
+  team: "black"
+}, {
+  bx: 0,
+  by: 3,
+  name: "guard",
+  team: "black"
+}, {
+  bx: 0,
+  by: 4,
+  name: "king",
+  team: "black"
+}, {
+  bx: 0,
+  by: 5,
+  name: "guard",
+  team: "black"
+}, {
+  bx: 0,
+  by: 6,
+  name: "elephant",
+  team: "black"
+}, {
+  bx: 0,
+  by: 7,
+  name: "knight",
+  team: "black"
+}, {
+  bx: 0,
+  by: 8,
+  name: "castle",
+  team: "black"
+}, {
+  bx: 6,
+  by: 0,
+  name: "pawn",
+  team: "white"
+}, {
+  bx: 6,
+  by: 2,
+  name: "pawn",
+  team: "white"
+}, {
+  bx: 6,
+  by: 6,
+  name: "pawn",
+  team: "white"
+}, {
+  bx: 6,
+  by: 8,
+  name: "pawn",
+  team: "white"
+}, {
+  bx: 7,
+  by: 1,
+  name: "cannon",
+  team: "white"
+}, {
+  bx: 7,
+  by: 7,
+  name: "cannon",
+  team: "white"
+}, {
+  bx: 3,
+  by: 0,
+  name: "pawn",
+  team: "black"
+}, {
+  bx: 3,
+  by: 2,
+  name: "pawn",
+  team: "black"
+}, {
+  bx: 3,
+  by: 6,
+  name: "pawn",
+  team: "black"
+}, {
+  bx: 3,
+  by: 8,
+  name: "pawn",
+  team: "black"
+}, {
+  bx: 2,
+  by: 1,
+  name: "cannon",
+  team: "black"
+}, {
+  bx: 2,
+  by: 7,
+  name: "cannon",
+  team: "black"
+}];
+var piecegroup = svg.append("g");
+for (var i = 0; i < pieceArray.length; i ++) {
+  pieceArray[i].game = {};
+  pieceArray[i].y = pieceArray[i].bx * 50 + 50;
+  pieceArray[i].x = pieceArray[i].by * 50 + 50;
+  pieceArray[i].node = piecegroup.append("use")
+    .attr("href", "#" + pieceArray[i].name + (pieceArray[i].team == "black" ? "b" : ""))
+    .datum(pieceArray[i])
+    .attr("transform", "translate(" + pieceArray[i].x + " " + pieceArray[i].y + ")");
+}    
+function updatePieces () {
+  for (var i = 0; i < pieceArray.length; i ++) {
+    ""
+  }
+}
