@@ -283,16 +283,18 @@ bvs[0][5] = "guardb";
 bvs[0][6] = "elephantb";
 bvs[0][7] = "knightb";
 bvs[0][8] = "castleb";
-bvs[6][0] = "pawn"
-bvs[6][2] = "pawn"
+bvs[6][0] = "pawn";
+bvs[6][2] = "pawn";
+bvs[6][4] = "pawn";
 bvs[6][6] = "pawn";
-bvs[6][8] = "pawn"
-bvs[7][1] = "cannon";
+bvs[6][8] = "pawn";
+bvs[7][1] = "cannon;";
 bvs[7][7] = "cannon";
-bvs[3][0] = "pawnb"
-bvs[3][2] = "pawnb"
+bvs[3][0] = "pawnb";
+bvs[3][2] = "pawnb";
+bvs[3][4] = "pawnb";
 bvs[3][6] = "pawnb";
-bvs[3][8] = "pawnb"
+bvs[3][8] = "pawnb";
 bvs[2][1] = "cannonb";
 bvs[2][7] = "cannonb";
 var pieceArray = [{
@@ -397,6 +399,11 @@ var pieceArray = [{
   team: "white"
 }, {
   bx: 6,
+  by: 4,
+  name: "pawn",
+  team: "white"
+}, {
+  bx: 6,
   by: 6,
   name: "pawn",
   team: "white"
@@ -427,6 +434,11 @@ var pieceArray = [{
   team: "black"
 }, {
   bx: 3,
+  by: 4,
+  name: "pawn",
+  team: "black"
+}, {
+  bx: 3,
   by: 6,
   name: "pawn",
   team: "black"
@@ -446,6 +458,7 @@ var pieceArray = [{
   name: "cannon",
   team: "black"
 }];
+var notgroup = svg.append("g");
 var piecegroup = svg.append("g");
 for (var i = 0; i < pieceArray.length; i ++) {
   pieceArray[i].game = {};
@@ -453,11 +466,53 @@ for (var i = 0; i < pieceArray.length; i ++) {
   pieceArray[i].x = pieceArray[i].by * 50 + 50;
   pieceArray[i].node = piecegroup.append("use")
     .attr("href", "#" + pieceArray[i].name + (pieceArray[i].team == "black" ? "b" : ""))
+    .classed("curpiece", true)
     .datum(pieceArray[i])
     .attr("transform", "translate(" + pieceArray[i].x + " " + pieceArray[i].y + ")");
-}    
+}
+var curSelected = null;
+var curUp = null;
 function updatePieces () {
   for (var i = 0; i < pieceArray.length; i ++) {
-    ""
+    pieceArray[i].node.attr("transform", "translate(" + pieceArray[i].x + " " + pieceArray[i].y + ")");
   }
 }
+function calculateMoves () {
+
+}
+
+function calculatePremoves () {
+  
+}
+var mouseX = 0;
+var mouseY = 0;
+svg.on("mousemove", function () {
+  var cords = d3.mouse(this);
+  mouseX = cords[0];
+  mouseY = cords[1];
+});
+d3.selectAll("use.curpiece").on("mousedown", function () {
+  if (d3.event.button == 0) {
+    curUp = d3.select(this).raise();
+    curSelected = curUp;
+  }
+  d3.event.stopPropagation();
+});
+d3.selectAll("use.curpiece").on("mouseup", function () {
+  if (d3.event.button == 0 && curUp) {
+    curUp.datum().y = curUp.datum().bx * 50 + 50;
+    curUp.datum().x = curUp.datum().by * 50 + 50;
+    curUp = null;
+  }
+  d3.event.stopPropagation();
+});
+svg.on("mousedown", function () {
+  curSelected = null;
+});
+setInterval(function () {
+  if (curUp) {
+    curUp.datum().x = mouseX;
+    curUp.datum().y = mouseY;
+  }
+  updatePieces();
+}, 1);

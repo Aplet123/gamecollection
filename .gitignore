@@ -65,3 +65,5 @@ secret/*
 .secret
 .settings
 .project
+.eslintrc.*
+.eslintrc
