@@ -262,6 +262,54 @@ defs.select("#cannonb")
   .attr("stroke", "#000000")
   .attr("stroke-width", "2")
   .attr("stroke-linecap", "round");
+defs.append("use")
+  .attr("id", "activemove")
+  .append("circle")
+  .attr("cx", "0")
+  .attr("cy", "0")
+  .attr("r", "10")
+  .attr("opacity", "0.5")
+  .attr("fill", "#00ff00");
+defs.select("#activemove")
+  .append("circle")
+  .attr("cx", "0")
+  .attr("cy", "0")
+  .attr("r", "20")
+  .attr("opacity", "0")
+  .attr("fill", "#00ff00");
+defs.append("use")
+  .attr("id", "activetake")
+  .append("rect")
+  .attr("x", "-18")
+  .attr("y", "18")
+  .attr("width", "36")
+  .attr("height", "36")
+  .attr("opacity", "0.5")
+  .attr("fill", "#00ff00");
+defs.append("use")
+  .attr("id", "inactivemove")
+  .append("circle")
+  .attr("cx", "0")
+  .attr("cy", "0")
+  .attr("r", "10")
+  .attr("opacity", "0.5")
+  .attr("fill", "#aaaaaa");
+defs.select("#inactivemove")
+  .append("circle")
+  .attr("cx", "0")
+  .attr("cy", "0")
+  .attr("r", "20")
+  .attr("opacity", "0")
+  .attr("fill", "#aaaaaa");
+defs.append("use")
+  .attr("id", "inactivetake")
+  .append("rect")
+  .attr("x", "-18")
+  .attr("y", "18")
+  .attr("width", "36")
+  .attr("height", "36")
+  .attr("opacity", "0.5")
+  .attr("fill", "#aaaaaa");
 var bvs = d3.range(10).map(function () {
   return Array(9);
 });
@@ -478,7 +526,12 @@ function updatePieces () {
   }
 }
 function calculateMoves () {
-
+  if (curSelected) {
+    var dt = curSelected.datum();
+    if (dt.name == "pawn" && dt.team == "white") {
+      dt;
+    }
+  }
 }
 
 function calculatePremoves () {
@@ -495,16 +548,17 @@ d3.selectAll("use.curpiece").on("mousedown", function () {
   if (d3.event.button == 0) {
     curUp = d3.select(this).raise();
     curSelected = curUp;
+    calculateMoves();
+    d3.event.stopPropagation();
   }
-  d3.event.stopPropagation();
 });
 d3.selectAll("use.curpiece").on("mouseup", function () {
   if (d3.event.button == 0 && curUp) {
     curUp.datum().y = curUp.datum().bx * 50 + 50;
     curUp.datum().x = curUp.datum().by * 50 + 50;
     curUp = null;
+    d3.event.stopPropagation();
   }
-  d3.event.stopPropagation();
 });
 svg.on("mousedown", function () {
   curSelected = null;
