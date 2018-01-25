@@ -262,7 +262,7 @@ defs.select("#cannonb")
   .attr("stroke", "#000000")
   .attr("stroke-width", "2")
   .attr("stroke-linecap", "round");
-defs.append("use")
+defs.append("g")
   .attr("id", "activemove")
   .append("circle")
   .attr("cx", "0")
@@ -277,16 +277,16 @@ defs.select("#activemove")
   .attr("r", "20")
   .attr("opacity", "0")
   .attr("fill", "#00ff00");
-defs.append("use")
+defs.append("g")
   .attr("id", "activetake")
   .append("rect")
   .attr("x", "-18")
-  .attr("y", "18")
+  .attr("y", "-18")
   .attr("width", "36")
   .attr("height", "36")
   .attr("opacity", "0.5")
   .attr("fill", "#00ff00");
-defs.append("use")
+defs.append("g")
   .attr("id", "inactivemove")
   .append("circle")
   .attr("cx", "0")
@@ -301,7 +301,7 @@ defs.select("#inactivemove")
   .attr("r", "20")
   .attr("opacity", "0")
   .attr("fill", "#aaaaaa");
-defs.append("use")
+defs.append("g")
   .attr("id", "inactivetake")
   .append("rect")
   .attr("x", "-18")
@@ -313,38 +313,38 @@ defs.append("use")
 var bvs = d3.range(10).map(function () {
   return Array(9);
 });
-bvs[9][0] = "castle";
-bvs[9][1] = "knight";
-bvs[9][2] = "elephant";
-bvs[9][3] = "guard";
-bvs[9][4] = "king";
-bvs[9][5] = "guard";
-bvs[9][6] = "elephant";
-bvs[9][7] = "knight";
-bvs[9][8] = "castle";
-bvs[0][0] = "castleb";
-bvs[0][1] = "knightb";
-bvs[0][2] = "elephantb";
-bvs[0][3] = "guardb";
-bvs[0][4] = "kingb";
-bvs[0][5] = "guardb";
-bvs[0][6] = "elephantb";
-bvs[0][7] = "knightb";
-bvs[0][8] = "castleb";
-bvs[6][0] = "pawn";
-bvs[6][2] = "pawn";
-bvs[6][4] = "pawn";
-bvs[6][6] = "pawn";
-bvs[6][8] = "pawn";
-bvs[7][1] = "cannon;";
-bvs[7][7] = "cannon";
-bvs[3][0] = "pawnb";
-bvs[3][2] = "pawnb";
-bvs[3][4] = "pawnb";
-bvs[3][6] = "pawnb";
-bvs[3][8] = "pawnb";
-bvs[2][1] = "cannonb";
-bvs[2][7] = "cannonb";
+bvs[9][0] = "w";
+bvs[9][1] = "w";
+bvs[9][2] = "w";
+bvs[9][3] = "w";
+bvs[9][4] = "w";
+bvs[9][5] = "w";
+bvs[9][6] = "w";
+bvs[9][7] = "w";
+bvs[9][8] = "w";
+bvs[0][0] = "b";
+bvs[0][1] = "b";
+bvs[0][2] = "b";
+bvs[0][3] = "b";
+bvs[0][4] = "b";
+bvs[0][5] = "b";
+bvs[0][6] = "b";
+bvs[0][7] = "b";
+bvs[0][8] = "b";
+bvs[6][0] = "w";
+bvs[6][2] = "w";
+bvs[6][4] = "w";
+bvs[6][6] = "w";
+bvs[6][8] = "w";
+bvs[7][1] = "w";
+bvs[7][7] = "w";
+bvs[3][0] = "b";
+bvs[3][2] = "b";
+bvs[3][4] = "b";
+bvs[3][6] = "b";
+bvs[3][8] = "b";
+bvs[2][1] = "b";
+bvs[2][7] = "b";
 var pieceArray = [{
   bx: 9,
   by: 0,
@@ -506,12 +506,15 @@ var pieceArray = [{
   name: "cannon",
   team: "black"
 }];
+function boardLoc (sel) {
+  sel.y = sel.bx * 50 + 50;
+  sel.x = sel.by * 50 + 50;
+}
 var notgroup = svg.append("g");
 var piecegroup = svg.append("g");
 for (var i = 0; i < pieceArray.length; i ++) {
   pieceArray[i].game = {};
-  pieceArray[i].y = pieceArray[i].bx * 50 + 50;
-  pieceArray[i].x = pieceArray[i].by * 50 + 50;
+  boardLoc(pieceArray[i]);
   pieceArray[i].node = piecegroup.append("use")
     .attr("href", "#" + pieceArray[i].name + (pieceArray[i].team == "black" ? "b" : ""))
     .classed("curpiece", true)
@@ -525,11 +528,60 @@ function updatePieces () {
     pieceArray[i].node.attr("transform", "translate(" + pieceArray[i].x + " " + pieceArray[i].y + ")");
   }
 }
+var curTurn = "white";
+function setMove (use) {
+  var dt = curSelected.datum();
+  use.on("mouseup", function () {
+    bvs[dt.bx][dt.by] = undefined;
+    dt.bx = d3.select(this).datum().bx;
+    dt.by = d3.select(this).datum().by;
+    bvs[dt.bx][dt.by] = dt.team[0];
+    boardLoc(dt);
+    if (curTurn == "white") {
+      //curTurn = "black";
+    } else {
+      curTurn = "white";
+    }
+  })
+  .on("mousedown", function () {
+    bvs[dt.bx][dt.by] = undefined;
+    dt.bx = d3.select(this).datum().bx;
+    dt.by = d3.select(this).datum().by;
+    bvs[dt.bx][dt.by] = dt.team[0];
+    boardLoc(dt);
+    if (curTurn == "white") {
+      //curTurn = "black";
+    } else {
+      curTurn = "white";
+    }
+  });
+  return use;
+}
 function calculateMoves () {
+  notgroup.selectAll("*").remove();
   if (curSelected) {
     var dt = curSelected.datum();
+    if (curTurn != dt.team) {
+      return calculatePremoves();
+    }
     if (dt.name == "pawn" && dt.team == "white") {
-      dt;
+      var theType = "#activemove";
+      if (bvs[dt.bx - 1][dt.by] == "b") {
+        theType = "#activetake";
+      } else if (bvs[dt.bx - 1][dt.by] == "w") {
+        theType = "none";
+      }
+      if (theType != "none") {
+        setMove(notgroup.append("use"))
+          .attr("href", theType)
+          .attr("transform", "translate(" + (dt.by * 50 + 50) + " " + (dt.bx * 50) + ")")
+          .datum({
+            bx: dt.bx - 1,
+            by: dt.by,
+            x: dt.by * 50 + 50,
+            y: dt.bx * 50
+          });
+      }
     }
   }
 }
@@ -544,24 +596,26 @@ svg.on("mousemove", function () {
   mouseX = cords[0];
   mouseY = cords[1];
 });
-d3.selectAll("use.curpiece").on("mousedown", function () {
+svg.selectAll("use.curpiece").on("mousedown", function () {
   if (d3.event.button == 0) {
     curUp = d3.select(this).raise();
     curSelected = curUp;
+    curUp.style("pointer-events", "none");
     calculateMoves();
     d3.event.stopPropagation();
   }
 });
-d3.selectAll("use.curpiece").on("mouseup", function () {
+svg.on("mouseup", function () {
   if (d3.event.button == 0 && curUp) {
-    curUp.datum().y = curUp.datum().bx * 50 + 50;
-    curUp.datum().x = curUp.datum().by * 50 + 50;
+    boardLoc(curUp.datum());
+    curUp.style("pointer-events", "all");
     curUp = null;
     d3.event.stopPropagation();
   }
 });
 svg.on("mousedown", function () {
   curSelected = null;
+  calculateMoves();
 });
 setInterval(function () {
   if (curUp) {
